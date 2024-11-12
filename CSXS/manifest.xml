@@ -41,16 +41,16 @@ governing permissions and limitations under the License.
           <Menu>Weather Simple</Menu>
           <Geometry>
             <Size>
-              <Height>500</Height>
-              <Width>350</Width>
+              <Height>1000</Height>
+              <Width>1000</Width>
             </Size>
             <MinSize>
-              <Height>200</Height>
-              <Width>200</Width>
+              <Height>500</Height>
+              <Width>500</Width>
             </MinSize>
             <MaxSize>
-              <Height>600</Height>
-              <Width>400</Width>
+              <Height>2000</Height>
+              <Width>2000</Width>
             </MaxSize>
           </Geometry>
           <Icons />

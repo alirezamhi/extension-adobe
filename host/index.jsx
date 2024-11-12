@@ -129,3 +129,48 @@ function psHueSatLight(Hue,Sat,Light) {
     desc9.putList( charIDToTypeID('Adjs'), list2 );
     executeAction( charIDToTypeID('HStr'), desc9, DialogModes.NO );
 };
+
+ function importFiles() {
+  var filterString = "";
+  if (Folder.fs === 'Windows') {
+    filterString = "All files:*.*";
+  }
+  if (app.project) {
+    var fileOrFilesToImport = File.openDialog("aaaa", // title
+                          filterString, // filter available files?
+                          true); // allow multiple?
+    if (fileOrFilesToImport) {
+      // We have an array of File objects; importFiles() takes an array of paths.
+      var importThese = [];
+      if (importThese) {
+        // let bin = app.project.rootItem.children[0].createBin('samim')
+        for (var i = 0; i < fileOrFilesToImport.length; i++) {
+          importThese[i] = fileOrFilesToImport[i].fsName;
+        }
+        app.project.importFiles(importThese,
+                    true,
+                    app.project.getInsertionBin(),
+                    false);
+      }
+    } else {
+      $._PPP_.updateEventPanel("No files to import.");
+    }
+  }
+}
+
+function selectFolder() {
+  var folder = Folder.selectDialog("Select a folder to save the video");
+  if (folder) {
+      alert("Selected folder path: " + folder.fsName);
+      return folder.fsName; // This is the path to the selected folder.
+  } else {
+      alert("No folder selected.");
+  }
+}
+
+
+// Usage:
+// const folderPath = selectFolder();
+// if (folderPath) {
+  // Use folderPath to save your video.
+// }
