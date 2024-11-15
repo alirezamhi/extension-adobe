@@ -11,16 +11,43 @@ governing permissions and limitations under the License.
 */
 
 body {
-  background-color: blue;
-  color: white;
-  font-family: sans-serif;
-  font-size: 12px;
+  margin: auto;
+  height: 100vh;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+.selectFile{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.selectFile img{
+  width: 200px;
 }
 
-button {
+#importButton {
   background-color: red;
   color: white;
   font-family: sans-serif;
   font-size: 12px;
-  border: 1px solid yellow;
+  border: none;
+  border-radius: 5px 0 0 5px;
+  padding: 3px;
+  cursor: pointer;
+}
+.importContent{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+#importPath{
+  background-color: white;
+  border-radius: 0 5px 5px 0;
+  border: 1px solid black;
+  padding: 0 5px 0 5px;
+}
+#error{
+  color: red;
+  display: none;
 }
