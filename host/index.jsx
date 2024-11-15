@@ -3,7 +3,7 @@ function selectFilePath() {
   if ($.myFolder) {
       return $.myFolder.fsName
   }else{
-    return 'please select a valid path'
+    return 0
   }
 }
 

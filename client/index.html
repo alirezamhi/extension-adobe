@@ -3,18 +3,23 @@
 <head>
 	<meta charset="utf-8">
 	<title>samimGroup panel</title>
+	<link rel="stylesheet" href="./styles/libs/bootstrap.min.css">
 	<link rel="stylesheet" href="./styles/style.css">
 </head>
-<body>
-	<div class="selectFile">
-		<img src="../resource/Samim-Logo.png">
-		<div class="importContent">
-			<button id="importButton">select Folder</button>
-			<p id="importPath">please select folder to download</p>
-			<!-- <p id="error">please select folder to download</p> -->
+<body class="bg-dark d-flex justify-content-center">
+	<div class="selectFile d-flex flex-column align-items-center justify-content-evenly ">
+		<img src="../resource/Samim-Logo.png" class="img-fluid">
+		<div class="importContent input-group ">
+			<div class="input-group">
+				<button id="importButton" class="btn btn-outline-danger">select Folder</button>
+				<input id="importPath" class="form-control" placeholder="please setect file" disabled="true" required/>
+			</div>
+			<div class="invalid-feedback">
+				Please choose a username.
+			  </div>
 		</div>
-		<button class="samimButton">SamimBpms</button>
-		<!-- <button class="import">import</button> -->
+		  <div></div>
+		<button id="samimButton" class="btn btn-primary" disabled>SamimBpms</button>
 	</div>
 	<script src="./js/lib/CSInterface.js"></script>
 	<script src="./js/lib/formio.full.min.js"></script>
