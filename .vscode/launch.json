@@ -7,12 +7,19 @@
         {
             "type": "extendscript-debug",
             "request": "attach",
-            "name": "Attach to ExtendScript Engine"
+            "name": "Attach to ExtendScript Engine",
+            "script": "${workspaceFolder}/jsx/PPRO/Premiere.jsx",
+            "stopOnEntry": false,
+            "trace": true,
+            "logFile" : "~/Desktop/AMEPanel_Log.txt",
+            "selectTargetColor": "green"
         },
         {
             "type": "extendscript-debug",
             "request": "launch",
-            "name": "Launch Script in ExtendScript Engine"
+            "name": "Launch Script in ExtendScript Engine",           
+            "port": 7777,
+            "webRoot": "${workspaceRoot}"
         }
     ]
 }

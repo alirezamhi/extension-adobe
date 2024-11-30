@@ -21,6 +21,9 @@
           <MainPath>./client/index.html</MainPath>
           <ScriptPath>./host/index.jsx</ScriptPath>
           <CEFCommandLine />
+          <parameter>--mixed-context</parameter>
+          <parameter>--allow-file-access</parameter>
+          <parameter>--allow-file-access-from-files</parameter>
         </Resources>
         <Lifecycle>
           <AutoVisible>true</AutoVisible>
@@ -31,19 +34,23 @@
           <Geometry>
             <Size>
               <Height>600</Height>
-              <Width>750</Width>
+              <Width>1200</Width>
             </Size>
             <MinSize>
-              <Height>200</Height>
-              <Width>200</Width>
+              <Height>600</Height>
+              <Width>750</Width>
             </MinSize>
             <MaxSize>
               <Height>800</Height>
-              <Width>800</Width>
+              <Width>850</Width>
             </MaxSize>
           </Geometry>
           <Icons />
         </UI>
+        <Debug>
+          <Host>localhost</Host>
+          <Port>8084</Port>
+        </Debug>
       </DispatchInfo>
     </Extension>
   </DispatchInfoList>

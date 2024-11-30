@@ -15,15 +15,35 @@ body {
   height: 100vh;
   /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
 }
-.selectFile{
+.setting{
   height: 100%;
   width: 90vw;
 }
-.selectFile img{
+.setting img{
   width: 200px;
   margin-bottom: 20px;
 }
 
 .display{
   display: block;
+}
+.display-none{
+  display: none !important;
+}
+video{
+  width: 100% !important;
+  height: 100% !important;
+}
+td:hover .btnStatus{
+  visibility: visible;
+  cursor: pointer;
+}
+
+.btnStatus{
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.tableList{
+  width: 80vw;
 }

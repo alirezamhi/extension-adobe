@@ -6,23 +6,54 @@
 	<link rel="stylesheet" href="./styles/libs/bootstrap.min.css">
 	<link rel="stylesheet" href="./styles/style.css">
 </head>
-<body class="bg-dark d-flex justify-content-center">
-	<div class="selectFile d-flex flex-column align-items-center justify-content-evenly ">
-		<img src="../resource/Samim-Logo.png" class="img-fluid">
-		<div class="importContent input-group ">
-			<div class="input-group">
-				<button id="importButton" class="btn btn-outline-danger">select Folder</button>
-				<input id="importPath" class="form-control" placeholder="please setect file" disabled="true" required/>
-			</div>
-			<div class="invalid-feedback">
-				Please choose a username.
-			  </div>
+<body class="bg-dark-subtle d-flex flex-column justify-content-center align-items-center" onload="onloadData()">
+	<div class="welcome d-flex flex-column justify-content-center align-items-center">
+		<img src="../resource/Samim-Logo.png"/>
+		<h4 class="text-center m-4" id="welcomeMessage"></h4>
+		<div class="btn-group">
+			<button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal" id="setting">setting</button>
+			<button class="btn btn-success" id="BPMSButton">BPMS Samim</button>
+			<button class="btn btn-primary" id="videoManager">video manager</button>
 		</div>
-		  <div></div>
-		<button id="samimButton" class="btn btn-primary" disabled>SamimBpms</button>
+	</div>
+	  <!-- Modal -->
+	  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h1 class="modal-title fs-5" id="exampleModalLabel">setting</h1>
+			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
+			<div class="modal-body d-flex justify-content-center align-items-center flex-column">
+				
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+			  <button type="button" class="btn btn-primary" id="saveSetting" data-bs-dismiss="modal" onclick="saveSetting()">Save changes</button>
+			</div>
+		  </div>
+		</div>
+	  </div>
+	<!-- closeModal -->
+	<div class="tableList d-flex flex-column justify-content-center align-items-center display-none">
+		<table class="table table-striped">
+			<thead>
+			  <tr>
+				<th scope="col">#</th>
+				<th scope="col">MetaId</th>
+				<th scope="col">name</th>
+				<th scope="col">FileSize</th>
+				<th scope="col">Duration</th>
+				<th scope="col">link</th>
+				<th scope="col">status</th>
+				<th scope="col">buttons</th>
+			  </tr>
+			</thead>
+		  </table>
+		  <button onclick="backtowelcomPage()" class="btn btn-outline-primary">back</button>
 	</div>
 	<script src="./js/lib/CSInterface.js"></script>
-	<script src="./js/lib/formio.full.min.js"></script>
+	<script src="./js/lib/bootstrap.min.js"></script>
 	<script src="./js/index.js"></script>
 </body>
 </html>
