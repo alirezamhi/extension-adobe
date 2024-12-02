@@ -187,6 +187,7 @@ function createMarks (data) {
       var newCommentMarker = markers.createMarker(ArrData[i].start);
       newCommentMarker.name = ArrData[i].content
       newCommentMarker.comments = "Comments"
+      newCommentMarker.type = ArrData[i].type
       newCommentMarker.end = (ArrData[i].end);
       newCommentMarker.setColorByIndex(i);
     }
@@ -214,8 +215,8 @@ function getAllMarkersFromSequence() {
             comment: marker.comments,  // توضیحات Marker
             group: 'cut',  // توضیحات Marker
             start: marker.start.ticks / 254016000,  // زمان شروع به ثانیه
-            end: marker.end.ticks / 254016000, // مدت زمان Marker به ثانی
-            type:'range'
+            end: marker.type == 'range'? marker.end.ticks / 254016000 : '', // مدت زمان Marker به ثانی
+            type: marker.type
         }
           markerArray.push(obj)
       }
