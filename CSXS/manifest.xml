@@ -19,7 +19,7 @@
     <Extension Id="com.cep.MAMCenter.panel">
       <DispatchInfo>
         <Resources>
-          <MainPath>./client/index.html</MainPath>
+          <MainPath>./client/html/index.html</MainPath>
           <ScriptPath>./host/index.jsx</ScriptPath>
           <CEFCommandLine />
           <parameter>--mixed-context</parameter>
@@ -57,7 +57,7 @@
     <Extension Id="com.cep.MAMInBox.panel">
       <DispatchInfo>
         <Resources>
-          <MainPath>./client/html/index.html</MainPath>
+          <MainPath>./client/html/inBox.html</MainPath>
           <ScriptPath>./host/index.jsx</ScriptPath>
           <CEFCommandLine />
           <parameter>--mixed-context</parameter>
