@@ -11,6 +11,8 @@ var csInterface = new CSInterface();
 
 BPMSButton.addEventListener('click', () => {
     window.location.href = "http://localhost:8080/"
+    //  window.location.href = "http://dev.nasim.int/bpms/app/tasklist/default/login"
+    //  window.location.href = "http://dev.bazar.int/bpms/app/tasklist/default/?filter=0db46d81-7ddf-11ec-9687-005056a739eb&sorting=%5B%7B%22sortBy%22:%22created%22,%22sortOrder%22:%22desc%22%7D%5D&task=b2fbf440-b20d-11ef-b069-005056849e05"
 })
 
 
