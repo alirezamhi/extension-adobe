@@ -13,6 +13,7 @@ function sendFileAddress () {
 };
 
 function importFile (pathAdress) {
+  $.writeln('alllll')
   var filePaths = [pathAdress];
   var suppressUI = true;
   var targetBin = null;
@@ -21,16 +22,15 @@ function importFile (pathAdress) {
   var success = app.project.importFiles(filePaths, suppressUI, targetBin, importAsNumberedStills);
   if (success) {
     var importedItem = app.project.rootItem.children[app.project.rootItem.children.numItems - 1];  // آخرین آیتم واردشده
-    $.writeln(importedItem)
     // پیدا کردن Sequence مدنظر
     var targetSequence = null;
     for (var i = 0; i < app.project.sequences.numSequences; i++) {
-      if (app.project.sequences[i].name === 'SamimTaskList') {
+      if (app.project.sequences[i].name === $.nameSequence) {
         targetSequence = app.project.sequences[i];
         break;
       }
     }
-    $.writeln(targetSequence, 'mayyyyyyyyyyyyyyyyyy seqqqqqqqqqqqqq')
+    // $.writeln(targetSequence, importedItem)
     if (targetSequence && importedItem) {
       // اضافه کردن فایل به Sequence هدف
       targetSequence.videoTracks[0].insertClip(importedItem, targetSequence.getInPoint());
@@ -153,12 +153,13 @@ function setFileAddress (address) {
   $.myFolder = { fsName: address }
 }
 
-function createSequence () {
+function createSequence (fileName) {
+  $.writeln('aaaaaaaaaaaaaaaaaaaa')
   var activeSequence = app.project.activeSequence;
   var sequence
   if (!activeSequence) {
     var idSequence = 'fd763a6c-67f0-464a-ab02-24c60f625a3f'
-    sequence = app.project.createNewSequence("samimGroup", idSequence);
+    sequence = app.project.createNewSequence(fileName, idSequence);
     if (sequence == 0) {
       alert("Not created! There was an error.");
     }
@@ -174,7 +175,7 @@ function createMarks (data) {
   var sequence
   if (!activeSequence) {
     var idSequence = 'fd763a6c-67f0-464a-ab02-24c60f625a3f'
-    sequence = app.project.createNewSequence("samimGroup", idSequence);
+    sequence = app.project.createNewSequence($.nameSequence, idSequence);
     if (sequence == 0) {
       alert("Not created! There was an error.");
     }
@@ -209,13 +210,15 @@ function getAllMarkersFromSequence() {
 
       // حلقه برای دریافت همه Markerها
       for (var i = 0; i < markers.numMarkers; i++) {
-          var marker = markers[i];  // هر Marker را به ترتیب دریافت می‌کنیم
+          var marker = markers[i];
+          $.writeln(marker.start.ticks / 254016000)  // هر Marker را به ترتیب دریافت می‌کنیم
+          $.writeln(marker.end.ticks / 254016000)  // هر Marker را به ترتیب دریافت می‌کنیم
           var obj = {
             content: marker.name,  // نام Marker
             comment: marker.comments,  // توضیحات Marker
             group: 'cut',  // توضیحات Marker
             start: marker.start.ticks / 254016000,  // زمان شروع به ثانیه
-            end: marker.type == 'range'? marker.end.ticks / 254016000 : '', // مدت زمان Marker به ثانی
+            end: marker.end.ticks / 254016000 , // مدت زمان Marker به ثانی
             type: marker.type
         }
           markerArray.push(obj)
