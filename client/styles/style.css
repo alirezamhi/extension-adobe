@@ -11,16 +11,39 @@ governing permissions and limitations under the License.
 */
 
 body {
-  background-color: blue;
-  color: white;
-  font-family: sans-serif;
-  font-size: 12px;
+  margin: auto;
+  height: 100vh;
+  /* font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
+}
+.setting{
+  height: 100%;
+  width: 90vw;
+}
+.setting img{
+  width: 200px;
+  margin-bottom: 20px;
 }
 
-button {
-  background-color: red;
-  color: white;
-  font-family: sans-serif;
-  font-size: 12px;
-  border: 1px solid yellow;
+.display{
+  display: block;
+}
+.display-none{
+  display: none !important;
+}
+video{
+  width: 100% !important;
+  height: 100% !important;
+}
+td:hover .btnStatus{
+  visibility: visible;
+  cursor: pointer;
+}
+
+.btnStatus{
+  cursor: pointer;
+  visibility: hidden;
+}
+
+.tableList{
+  width: 80vw;
 }

@@ -1,176 +1,240 @@
-/*
-Copyright 2018 Adobe. All rights reserved.
-This file is licensed to you under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License. You may obtain a copy
-of the License at http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software distributed under
-the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
-OF ANY KIND, either express or implied. See the License for the specific language
-governing permissions and limitations under the License.
-*/
-
-function applyData(currentWeatherSlug, currentWeatherString) {
-  var layer;
-  var frame;
-
-  if (app.name === "Adobe Photoshop") {
-    layer = app.documents[0].artLayers[0];
-  }
-  else if (app.name === "Adobe InDesign") {
-    frame = app.documents.item(0).pages.item(0).textFrames.add({geometricBounds: [72, 72, 110, 300]});
-  }
-
-  switch (currentWeatherSlug) {
-    case "clear-day":
-      if (app.name === "Adobe Photoshop") {
-        layer.adjustColorBalance([0,0,0], [-10,0,0], [-50,0,0]);
-      }
-      else if (app.name === "Adobe InDesign") {
-        frame.contents = currentWeatherString;
-      }
-      break;
-
-    case "clear-night":
-      if (app.name === "Adobe Photoshop") {
-        layer.adjustColorBalance([0,0,33], [-39,-14,100], [-10,0,17]);
-      }
-      else if (app.name === "Adobe InDesign") {
-        frame.contents = currentWeatherString;
-      }
-      break;
-
-    case "rain":
-      if (app.name === "Adobe Photoshop") {
-        layer.adjustColorBalance([0,0,-35], [-45,24,41], [-6,8,38]);
-      }
-      else if (app.name === "Adobe InDesign") {
-        frame.contents = currentWeatherString;
-      }
-      break;
-
-    case "snow":
-      if (app.name === "Adobe Photoshop") {
-        layer.adjustColorBalance([-100,0,2], [-100,0,60], [-58,0,15]);
-      }
-      else if (app.name === "Adobe InDesign") {
-        frame.contents = currentWeatherString;
-      }
-      break;
-
-    case "sleet":
-      if (app.name === "Adobe Photoshop") {
-        layer.adjustColorBalance([-100,0,2], [-100,0,60], [-58,0,15]);
-      }
-      else if (app.name === "Adobe InDesign") {
-        frame.contents = currentWeatherString;
-      }
-      break;
-
-    case "wind":
-      if (app.name === "Adobe Photoshop") {
-        layer.adjustColorBalance([0,0,0], [-10,0,0], [-50,0,0]);
-      }
-      else if (app.name === "Adobe InDesign") {
-        frame.contents = currentWeatherString;
-      }
-      break;
-
-    case "fog":
-      if (app.name === "Adobe Photoshop") {
-        psHueSatLight(0, -50, 50);
-      }
-      else if (app.name === "Adobe InDesign") {
-        frame.contents = currentWeatherString;
-      }
-      break;
-
-    case "cloudy":
-      if (app.name === "Adobe Photoshop") {
-        psHueSatLight(0, -69, -21);
-      }
-      else if (app.name === "Adobe InDesign") {
-        frame.contents = currentWeatherString;
-      }
-      break;
-
-    case "partly-cloudy-day":
-      if (app.name === "Adobe Photoshop") {
-        psHueSatLight(0, 0, -25);
-      }
-      else if (app.name === "Adobe InDesign") {
-        frame.contents = currentWeatherString;
-      }
-      break;
-
-    case "partly-cloudy-night":
-      if (app.name === "Adobe Photoshop") {
-        psHueSatLight(33, -75, -50);
-      }
-      else if (app.name === "Adobe InDesign") {
-        frame.contents = currentWeatherString;
-      }
-      break;
-
-    default:
-      alert("default");
+#include "json2.js";
+function selectFilePath () {
+  $.myFolder = Folder.selectDialog("Select a folder to Import video");
+  if ($.myFolder) {
+    return $.myFolder.fsName
+  } else {
+    return 0
   }
 }
 
-function psHueSatLight(Hue,Sat,Light) {
-    var desc9 = new ActionDescriptor();
-    desc9.putBoolean( charIDToTypeID('Clrz'), false );
-        var list2 = new ActionList();
-            var desc10 = new ActionDescriptor();
-            desc10.putInteger( charIDToTypeID('H   '), Hue );
-            desc10.putInteger( charIDToTypeID('Strt'), Sat );
-            desc10.putInteger( charIDToTypeID('Lght'), Light );
-        list2.putObject( charIDToTypeID('Hst2'), desc10 );
-    desc9.putList( charIDToTypeID('Adjs'), list2 );
-    executeAction( charIDToTypeID('HStr'), desc9, DialogModes.NO );
+function sendFileAddress () {
+  return $.myFolder.fsName
 };
 
- function importFiles() {
-  var filterString = "";
-  if (Folder.fs === 'Windows') {
-    filterString = "All files:*.*";
-  }
-  if (app.project) {
-    var fileOrFilesToImport = File.openDialog("aaaa", // title
-                          filterString, // filter available files?
-                          true); // allow multiple?
-    if (fileOrFilesToImport) {
-      // We have an array of File objects; importFiles() takes an array of paths.
-      var importThese = [];
-      if (importThese) {
-        // let bin = app.project.rootItem.children[0].createBin('samim')
-        for (var i = 0; i < fileOrFilesToImport.length; i++) {
-          importThese[i] = fileOrFilesToImport[i].fsName;
-        }
-        app.project.importFiles(importThese,
-                    true,
-                    app.project.getInsertionBin(),
-                    false);
+function importFile (pathAdress) {
+  $.writeln('alllll')
+  var filePaths = [pathAdress];
+  var suppressUI = true;
+  var targetBin = null;
+  var importAsNumberedStills = false;
+
+  var success = app.project.importFiles(filePaths, suppressUI, targetBin, importAsNumberedStills);
+  if (success) {
+    var importedItem = app.project.rootItem.children[app.project.rootItem.children.numItems - 1];  // آخرین آیتم واردشده
+    // پیدا کردن Sequence مدنظر
+    var targetSequence = null;
+    for (var i = 0; i < app.project.sequences.numSequences; i++) {
+      if (app.project.sequences[i].name === $.nameSequence) {
+        targetSequence = app.project.sequences[i];
+        break;
       }
+    }
+    // $.writeln(targetSequence, importedItem)
+    if (targetSequence && importedItem) {
+      // اضافه کردن فایل به Sequence هدف
+      targetSequence.videoTracks[0].insertClip(importedItem, targetSequence.getInPoint());
+      alert("فایل با موفقیت به Sequence اضافه شد!");
     } else {
-      $._PPP_.updateEventPanel("No files to import.");
+      alert("Sequence یا فایل پیدا نشد.");
+    }
+  }
+
+}
+
+function getVersionInfo () {
+  return 'PPro ' + app.version + 'x' + app.build;
+}
+
+function getUserName () {
+  var userName = "User name not found.";
+  var homeDir = new File('~/');
+  if (homeDir) {
+    userName = homeDir.displayName;
+    homeDir.close();
+  }
+  return userName;
+}
+
+function getActiveSequence (id) {
+  $.writeln('al')
+  var result
+  $.nameSequence = id
+  var project = app.project; // Access the current project
+  var sequences = project.sequences; // Get all sequences in the project
+  if (sequences.numSequences > 0) {
+    for (var i = 0; i < sequences.numSequences; i++) {
+      var seq = sequences[i]; // Access each sequence
+      if (seq.name == id) {
+        $.writeln("Sequence " + (i + 1) + ": " + seq.name);
+        $.haveSequence = seq
+        result = true
+      } else {
+        result = false
+      }
+    }
+  } else {
+    $.writeln("No sequences found in this project.");
+    result = false
+  }
+  $.writeln(result)
+  return result
+}
+
+function addTags (JsonData) {
+  var data = JSON.parse(JsonData)
+  if ($.haveSequence) {
+    var lastMarkers = $.haveSequence.projectItem.getMarkers();
+    if (lastMarkers) {
+      while (lastMarkers.numMarkers > 0) {
+        var myMarkers = lastMarkers.getFirstMarker()
+        lastMarkers.deleteMarker(myMarkers);
+      }
+    }
+    var markers = $.haveSequence.markers;
+    if (markers) {
+      for (var i = 0; i < data.length; i++) {
+        var newCommentMarker = markers.createMarker(data[i].start);
+        newCommentMarker.name = data[i].content
+        newCommentMarker.comments = "Comments"
+        newCommentMarker.end = (data[i].end);
+        newCommentMarker.setColorByIndex(i);
+      }
+    }
+  } else {
+    var uniqIdSequence = 'fd763a6c-67f0-464a-ab02-24c60f625a3f'
+    sequence = app.project.createNewSequence($.nameSequence, uniqIdSequence);
+    if (sequence) {
+      var markers = sequence.markers;
+      if (markers) {
+        for (var i = 0; i < data.length; i++) {
+          var newCommentMarker = markers.createMarker(data[i].start);
+          newCommentMarker.name = data[i].content
+          newCommentMarker.comments = "Comments"
+          newCommentMarker.end = (data[i].end);
+          newCommentMarker.setColorByIndex(i);
+        }
+      }
+    }
+    if (sequence == 0) {
+      alert("Not created! There was an error.");
     }
   }
 }
 
-function selectFolder() {
-  var folder = Folder.selectDialog("Select a folder to save the video");
-  if (folder) {
-      alert("Selected folder path: " + folder.fsName);
-      return folder.fsName; // This is the path to the selected folder.
+function addFile () {
+  // if (importSuccess) {
+  //     var importedItem = app.project.rootItem.children[app.project.rootItem.children.numItems - 1];  // آخرین آیتم واردشده
+
+  //     // پیدا کردن Sequence مدنظر
+  //     var targetSequence = null;
+  //     for (var i = 0; i < app.project.sequences.numSequences; i++) {
+  //         if (app.project.sequences[i].name === sequenceName) {
+  //             targetSequence = app.project.sequences[i];
+  //             break;
+  //         }
+  //     }
+
+  //     if (targetSequence && importedItem) {
+  //         // اضافه کردن فایل به Sequence هدف
+  //         targetSequence.videoTracks[0].insertClip(importedItem, targetSequence.getInPoint());
+  //         alert("فایل با موفقیت به Sequence اضافه شد!");
+  //     } else {
+  //         alert("Sequence یا فایل پیدا نشد.");
+  //     }
+  // } else {
+  //     alert("وارد کردن فایل موفق نبود.");
+  // }
+
+
+}
+
+function setFileAddress (address) {
+  $.myFolder = { fsName: address }
+}
+
+function createSequence (fileName) {
+  $.writeln('aaaaaaaaaaaaaaaaaaaa')
+  var activeSequence = app.project.activeSequence;
+  var sequence
+  if (!activeSequence) {
+    var idSequence = 'fd763a6c-67f0-464a-ab02-24c60f625a3f'
+    sequence = app.project.createNewSequence(fileName, idSequence);
+    if (sequence == 0) {
+      alert("Not created! There was an error.");
+    }
   } else {
-      alert("No folder selected.");
+    sequence = app.project.sequences[0]
+  }
+  return sequence
+}
+
+function createMarks (data) {
+  var ArrData = JSON.parse(data)
+  var activeSequence = app.project.activeSequence;
+  var sequence
+  if (!activeSequence) {
+    var idSequence = 'fd763a6c-67f0-464a-ab02-24c60f625a3f'
+    sequence = app.project.createNewSequence($.nameSequence, idSequence);
+    if (sequence == 0) {
+      alert("Not created! There was an error.");
+    }
+  } else {
+    sequence = app.project.sequences[0]
+  }
+  var markers = sequence.markers;
+  if (markers) {
+    for (var i = 0; i < ArrData.length; i++) {
+      var newCommentMarker = markers.createMarker(ArrData[i].start);
+      newCommentMarker.name = ArrData[i].content
+      newCommentMarker.comments = "Comments"
+      newCommentMarker.type = ArrData[i].type
+      newCommentMarker.end = (ArrData[i].end);
+      newCommentMarker.setColorByIndex(i);
+    }
+  }
+}
+
+function processSequences (sequenceData) {
+  var sequences = eval(sequenceData);
+  for (var i = 0; i < sequences.length; i++) {
+    $.writeln('Sequence Name: ' + sequences[i]);
+  }
+}
+
+function getAllMarkersFromSequence() {
+  var seq = app.project.activeSequence;  // گرفتن سکانس فعال
+  if (seq) {
+      var markers = seq.markers;  // استفاده از markers از سکانس
+      var markerArray = [];
+
+      // حلقه برای دریافت همه Markerها
+      for (var i = 0; i < markers.numMarkers; i++) {
+          var marker = markers[i];
+          $.writeln(marker.start.ticks / 254016000)  // هر Marker را به ترتیب دریافت می‌کنیم
+          $.writeln(marker.end.ticks / 254016000)  // هر Marker را به ترتیب دریافت می‌کنیم
+          var obj = {
+            content: marker.name,  // نام Marker
+            comment: marker.comments,  // توضیحات Marker
+            group: 'cut',  // توضیحات Marker
+            start: marker.start.ticks / 254016000,  // زمان شروع به ثانیه
+            end: marker.end.ticks / 254016000 , // مدت زمان Marker به ثانی
+            type: marker.type
+        }
+          markerArray.push(obj)
+      }
+
+      if (markerArray.length > 0) {
+          return JSON.stringify(markerArray);  // برگرداندن Markerها به صورت JSON
+      } else {
+          alert("هیچ Markerای وجود ندارد.");
+      }
+  } else {
+      alert("هیچ سکانسی فعال نیست.");
   }
 }
 
 
-// Usage:
-// const folderPath = selectFolder();
-// if (folderPath) {
-  // Use folderPath to save your video.
-// }
+
+
+
